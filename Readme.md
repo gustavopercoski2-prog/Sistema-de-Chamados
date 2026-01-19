@@ -60,8 +60,8 @@ Trata-se de um projeto **full stack**, funcional e pronto para produção, ideal
 * ⏱️ **Controle inteligente de prazos (SLA)**  
   O sistema calcula automaticamente o tempo de atendimento considerando horário comercial, finais de semana e feriados.
 
-* 👥 **Gestão completa de usuários**  
-  - Criar, editar e remover usuários  
+* 👥 **Gestão completa de usuários e setores**  
+  - Criar, editar, remover usuários e setores
   - Definir grupos e níveis de acesso
   - Exportar relatórios de usuários e chamados em **Excel (.xlsx)**
 
