@@ -29,13 +29,15 @@
   <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" alt="JavaScript" title="JavaScript ES6+" width="50" height="50"/>
 </p>
 
-[Sobre o Projeto](#-sobre-o-projeto) • [Funcionalidades](#-funcionalidades-principais) • [SLA](#-sla-e-horas-uteis) • [Galeria](#-galeria) • [Instalação](#-instalação-e-execução)
+[Sobre o Projeto](#sobre) • [Funcionalidades](#funcionalidades) • [SLA](#sla) • [Galeria](#galeria) • [Instalação](#instalacao)
 
 </div>
 
 <br>
 
 ---
+
+<div id="sobre"></div>
 
 ## 💡 Visão Geral
 
@@ -52,35 +54,32 @@ Trata-se de um projeto **full stack**, funcional e pronto para produção, ideal
 
 ---
 
+<div id="funcionalidades"></div>
+
 ## ✨ Funcionalidades Principais
 
-* 🔐 **Login seguro em duas camadas**  
-  O acesso ao sistema é validado por um serviço separado, aumentando a segurança dos dados.
+* 🔐 **Login seguro em duas camadas** O acesso ao sistema é validado por um serviço separado, aumentando a segurança dos dados.
 
-* ⏱️ **Controle inteligente de prazos (SLA)**  
-  O sistema calcula automaticamente o tempo de atendimento considerando horário comercial, finais de semana e feriados.
+* ⏱️ **Controle inteligente de prazos (SLA)** O sistema calcula automaticamente o tempo de atendimento considerando horário comercial, finais de semana e feriados.
 
-* 👥 **Gestão completa de usuários e setores**  
+* 👥 **Gestão completa de usuários e setores**
   - Criar, editar, remover usuários e setores
   - Definir grupos e níveis de acesso
   - Exportar relatórios de usuários e chamados em **Excel (.xlsx)**
 
-* 📊 **Dashboard com indicadores em tempo real**  
-  Visão geral dos chamados com números claros e gráficos para facilitar decisões rápidas.
+* 📊 **Dashboard com indicadores em tempo real** Visão geral dos chamados com números claros e gráficos para facilitar decisões rápidas.
 
-* 🖼️ **Envio de arquivos facilitado**  
-  É possível anexar arquivos, arrastar documentos ou até colar prints diretamente no chamado (**Ctrl+V**).
+* 🖼️ **Envio de arquivos facilitado** É possível anexar arquivos, arrastar documentos ou até colar prints diretamente no chamado (**Ctrl+V**).
 
-* 🏢 **Acesso por setor e função**  
-  Cada usuário vê apenas os chamados relacionados ao seu setor, garantindo organização e privacidade.
+* 🏢 **Acesso por setor e função** Cada usuário vê apenas os chamados relacionados ao seu setor, garantindo organização e privacidade.
 
-* 🧾 **Histórico completo dos chamados**  
-  Todas as interações ficam registradas com data e hora, garantindo rastreabilidade.
+* 🧾 **Histórico completo dos chamados** Todas as interações ficam registradas com data e hora, garantindo rastreabilidade.
 
-* 🌙 **Modo claro e escuro**  
-  O sistema salva automaticamente a preferência de tema do usuário.
+* 🌙 **Modo claro e escuro** O sistema salva automaticamente a preferência de tema do usuário.
 
 ---
+
+<div id="sla"></div>
 
 ## ⚙️ SLA e Horas Úteis
 
@@ -104,7 +103,9 @@ O cálculo de SLA é um dos pontos centrais do projeto. O tempo **não é contad
 
 ---
 
-## 📸 Previews
+<div id="galeria"></div>
+
+## 📸 Galeria
 
 <div align="center">
 
@@ -154,51 +155,32 @@ sequenceDiagram
 
 ### Backend
 
-* **Python 3.14 + Django 5.0**  
-  Responsáveis pela lógica principal do sistema, regras de negócio, telas, controle de usuários e fluxo dos chamados.
-
-* **Bibliotecas de data e tempo**  
-  Utilizadas para calcular prazos de atendimento (SLA), considerando horário comercial, finais de semana e feriados.
-
-* **Pandas / OpenPyXL**  
-  Usadas para gerar relatórios e exportações de dados em formato **Excel (.xlsx)**.
-
-* **Java 17 + Spring Boot 3**  
-  Microsserviço responsável pela autenticação e validação segura de credenciais via API REST.
-
-* **PostgreSQL**  
-  Banco de dados relacional onde todas as informações do sistema são armazenadas de forma segura e estruturada.
+* **Python 3.14 + Django 5.0** Responsáveis pela lógica principal do sistema, regras de negócio, telas, controle de usuários e fluxo dos chamados.
+* **Bibliotecas de data e tempo** Utilizadas para calcular prazos de atendimento (SLA), considerando horário comercial, finais de semana e feriados.
+* **Pandas / OpenPyXL** Usadas para gerar relatórios e exportações de dados em formato **Excel (.xlsx)**.
+* **Java 17 + Spring Boot 3** Microsserviço responsável pela autenticação e validação segura de credenciais via API REST.
+* **PostgreSQL** Banco de dados relacional onde todas as informações do sistema são armazenadas de forma segura e estruturada.
 
 ---
 
 ### Frontend
 
-* **HTML5 / CSS3 (Bootstrap 5.3)**  
-  Estrutura e estilo das telas, com layout limpo e visual moderno.
-
-* **JavaScript (ES6+)**  
-  Comunicação assíncrona com o backend, atualização dinâmica da interface e melhor experiência do usuário.
-
-* **Jinja2**  
-  Motor de templates utilizado pelo Django para renderizar páginas dinâmicas.
+* **HTML5 / CSS3 (Bootstrap 5.3)** Estrutura e estilo das telas, com layout limpo e visual moderno.
+* **JavaScript (ES6+)** Comunicação assíncrona com o backend, atualização dinâmica da interface e melhor experiência do usuário.
+* **Jinja2** Motor de templates utilizado pelo Django para renderizar páginas dinâmicas.
 
 ---
 
 ### DevOps & Tools
 
-* **Docker**  
-  Containerização da aplicação, facilitando execução local e deploy em qualquer ambiente.
-
-* **Render (PaaS)**  
-  Plataforma de nuvem utilizada para publicar a aplicação em produção.
-
-* **Neon Tech**  
-  Banco de dados PostgreSQL serverless, garantindo escalabilidade e disponibilidade.
-
-* **Git / GitHub**  
-  Controle de versão, histórico do projeto e colaboração.
+* **Docker** Containerização da aplicação, facilitando execução local e deploy em qualquer ambiente.
+* **Render (PaaS)** Plataforma de nuvem utilizada para publicar a aplicação em produção.
+* **Neon Tech** Banco de dados PostgreSQL serverless, garantindo escalabilidade e disponibilidade.
+* **Git / GitHub** Controle de versão, histórico do projeto e colaboração.
 
 ---
+
+<div id="instalacao"></div>
 
 ## 🚀 Instalação e Execução
 
@@ -304,3 +286,5 @@ python manage.py runserver
 </a>
 
 </div>
+
+---
