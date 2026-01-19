@@ -1,0 +1,209 @@
+:root {
+    --bg-body: #f8fafc;
+    --sidebar-bg: #ffffff;
+    --card-bg: #ffffff;
+    --border-color: #e2e8f0;
+    --primary-color: #3b82f6;
+    --text-main: #1e293b;
+    --text-muted: #64748b;
+    --input-bg: #ffffff;
+    --hover-bg: #f8fafc;
+    --active-bg: #eff6ff;
+    --shadow-color: rgba(0,0,0,0.05);
+}
+
+/* TEMA ESCURO */
+[data-theme="dark"] {
+    --bg-body: #0f172a;
+    --sidebar-bg: #1e293b;
+    --card-bg: #1e293b;
+    --border-color: #334155;
+    --primary-color: #60a5fa; 
+    --text-main: #f1f5f9;
+    --text-muted: #94a3b8;
+    --input-bg: #334155;
+    --hover-bg: #334155;
+    --active-bg: #1e3a8a;
+    --shadow-color: rgba(0,0,0,0.5);
+}
+
+body { 
+    background: var(--bg-body); 
+    font-family: 'Inter', sans-serif; 
+    height: 100vh; 
+    overflow: hidden; 
+    color: var(--text-main);
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+/* LAYOUT FLEX */
+.main-wrapper { display: flex; height: calc(100vh - 64px); }
+
+/* PAINEL ESQUERDO (FORM) */
+.content-panel { 
+    flex: 1; 
+    padding: 3rem; 
+    overflow-y: auto; 
+    background: var(--bg-body); 
+}
+
+/* SIDEBAR DIREITA (LISTA + FILTROS) */
+.sidebar-right { 
+    width: 420px; 
+    background: var(--sidebar-bg); 
+    border-left: 1px solid var(--border-color); 
+    display: flex; 
+    flex-direction: column; 
+    box-shadow: -4px 0 20px rgba(0,0,0,0.02);
+    z-index: 10;
+}
+
+.sidebar-header {
+    padding: 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+    background: var(--sidebar-bg);
+}
+
+.user-list { flex: 1; overflow-y: auto; }
+
+/* ITEM DA LISTA */
+.user-item { 
+    padding: 1rem 1.5rem; 
+    border-bottom: 1px solid var(--border-color); 
+    cursor: pointer; 
+    transition: all 0.2s ease; 
+    text-decoration: none; 
+    display: flex; 
+    align-items: center;
+    gap: 12px;
+    color: inherit; 
+    position: relative;
+}
+
+.user-item:hover { background: var(--hover-bg); }
+
+.user-item.active { 
+    background: var(--active-bg); 
+    border-left: 4px solid var(--primary-color);
+}
+
+/* CHECKBOX CUSTOMIZADO */
+.form-check-input.custom-check {
+    width: 1.2em; height: 1.2em;
+    cursor: pointer;
+    border-color: #cbd5e1;
+}
+.form-check-input.custom-check:checked {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+/* AVATAR */
+.avatar-initial {
+    width: 40px; height: 40px;
+    background: var(--border-color);
+    color: var(--text-muted);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 0.9rem;
+    flex-shrink: 0;
+}
+
+.user-item.active .avatar-initial {
+    background: var(--primary-color);
+    color: white;
+}
+
+/* FORMULARIOS */
+.form-label { 
+    font-weight: 600; font-size: 0.75rem; text-transform: uppercase; 
+    letter-spacing: 0.05em; color: var(--text-muted); margin-bottom: 0.5rem;
+}
+
+.form-control-pro { 
+    border-radius: 8px; border: 1px solid var(--border-color); padding: 0.7rem 1rem; 
+    background: var(--input-bg); transition: 0.2s; color: var(--text-main);
+}
+
+.form-control-pro:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    outline: none;
+}
+
+.grayscale { filter: grayscale(1); opacity: 0.6; }
+
+.form-card { 
+    background: var(--card-bg); padding: 2.5rem; border-radius: 16px; 
+    box-shadow: 0 4px 6px -1px var(--shadow-color); 
+    border: 1px solid var(--border-color); 
+    max-width: 800px; margin: 0 auto; 
+}
+
+.section-title {
+    font-size: 0.85rem; font-weight: 700; color: var(--primary-color); 
+    margin-bottom: 1.5rem; display: flex; align-items: center; gap: 8px;
+}
+.section-title::after { content: ''; flex: 1; height: 1px; background: var(--border-color); }
+
+/* ELEMENTOS EXTRAS (Navbar, Modal) Ajustes Dark Mode */
+.navbar {
+    background-color: var(--sidebar-bg) !important;
+    border-bottom: 1px solid var(--border-color) !important;
+}
+.navbar span { color: var(--text-main) !important; }
+
+.modal-content { background-color: var(--card-bg); color: var(--text-main); }
+.modal-header, .modal-footer { border-color: var(--border-color) !important; background-color: var(--hover-bg) !important; }
+.modal-title { color: var(--text-main) !important; }
+
+/* ESTILOS DO SELETOR DE PERMISSOES */
+.dual-list-box {
+    height: 300px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    background: var(--card-bg);
+}
+.dual-list-header {
+    padding: 8px;
+    background: var(--hover-bg);
+    border-bottom: 1px solid var(--border-color);
+    font-weight: 700;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+.dual-list-filter {
+    padding: 8px;
+    border-bottom: 1px solid var(--border-color);
+    background: var(--card-bg);
+}
+.dual-list-select {
+    border: none;
+    flex-grow: 1;
+    padding: 5px;
+    font-size: 0.85rem;
+    color: var(--text-main);
+    width: 100%;
+    background: var(--card-bg);
+}
+.dual-list-select:focus { box-shadow: none; outline: none; }
+.dual-list-select option { 
+    padding: 4px 8px; 
+    border-bottom: 1px solid var(--border-color);
+    cursor: pointer;
+}
+.dual-list-select option:checked {
+    background: var(--primary-color) linear-gradient(0deg, var(--primary-color) 0%, var(--primary-color) 100%);
+    color: white;
+}
+.dual-list-footer {
+    padding: 8px;
+    background: var(--hover-bg);
+    border-top: 1px solid var(--border-color);
+    text-align: center;
+    font-size: 0.8rem;
+}

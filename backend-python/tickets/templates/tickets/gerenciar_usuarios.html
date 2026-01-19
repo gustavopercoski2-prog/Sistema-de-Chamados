@@ -1,0 +1,349 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestão de Usuários | PySupport</title>
+    
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232563eb' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 11h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-5Zm0 0a9 9 0 1 1 18 0m0 0v5a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3Z'/%3E%3Cpath d='M21 16v2a3 3 0 0 1-3 3h-5'/%3E%3C/svg%3E">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link href="{% static 'tickets/css/gerenciar_usuarios.css' %}" rel="stylesheet">
+</head>
+<body>
+
+    <nav class="navbar px-4 d-flex justify-content-between align-items-center" style="height: 64px;">
+        <div class="d-flex align-items-center gap-3">
+            <a href="{% url 'home' %}" class="btn btn-sm btn-light border text-muted">
+                <i class="bi bi-arrow-left me-1"></i> Voltar
+            </a>
+            <div class="vr mx-2 text-muted opacity-25"></div>
+            <span class="fw-bold" style="letter-spacing: -0.5px;">Gestão de Acessos</span>
+        </div>
+        
+        <div class="d-flex gap-2 align-items-center">
+            <button id="themeToggle" class="btn btn-light border btn-sm text-muted me-2" title="Alternar Tema">
+                <i class="bi bi-moon-stars"></i>
+            </button>
+
+            <button type="button" class="btn btn-light border btn-sm fw-bold text-muted me-2" data-bs-toggle="modal" data-bs-target="#modalNovoGrupo">
+                <i class="bi bi-collection me-1"></i> Grupos
+            </button>
+
+            <a href="?novo=1" class="btn btn-primary btn-sm fw-bold px-3">
+                <i class="bi bi-plus-lg me-1"></i> Novo Usuário
+            </a>
+        </div>
+    </nav>
+
+    <div class="main-wrapper">
+        
+        <div class="content-panel">
+            
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show shadow-sm border-0 mb-4" role="alert">
+                        <i class="bi bi-info-circle me-2"></i> {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            {% if modo_novo %}
+                <div class="form-card">
+                    <div class="mb-4">
+                        <h3 class="fw-bold mb-1" style="color: var(--text-main)">Novo Colaborador</h3>
+                        <p class="small text-muted">Preencha os dados para criar um novo acesso.</p>
+                    </div>
+                    
+                    <form method="post" action="{% url 'criar_usuario_sistema' %}">
+                        {% csrf_token %}
+                        
+                        <div class="section-title"><i class="bi bi-person-badge"></i> DADOS PESSOAIS</div>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Nome</label>
+                                {{ form.first_name }}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Sobrenome</label>
+                                {{ form.last_name }}
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label">Setor / Departamento</label>
+                            {{ form.setor }}
+                        </div>
+
+                        <div class="section-title mt-5"><i class="bi bi-shield-lock"></i> CREDENCIAIS</div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Usuário (Login)</label>
+                                {{ form.username }}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Nível de Permissão</label>
+                                {{ form.grupo }}
+                            </div>
+                        </div>
+
+                        <div class="row p-3 rounded border mb-4 mx-0" style="background: var(--bg-body);">
+                            <div class="col-md-6 mb-3 mb-md-0">
+                                <label class="form-label">Senha Temporária</label>
+                                {{ form.password }}
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Confirmar Senha</label>
+                                {{ form.password_confirm }}
+                            </div>
+                            <div class="col-12 mt-3">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" name="force_password_change" id="forceChange" checked>
+                                    <label class="form-check-label small text-muted" for="forceChange">Obrigar troca de senha no primeiro login</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-end gap-2">
+                            <a href="{% url 'gerenciar_usuarios' %}" class="btn btn-light border px-4">Cancelar</a>
+                            <button type="submit" class="btn btn-primary px-4 fw-bold shadow-sm">Criar Acesso</button>
+                        </div>
+                    </form>
+                </div>
+
+            {% elif usuario_selecionado %}
+                <div class="form-card">
+                    <div class="d-flex align-items-center gap-3 mb-4">
+                        <div class="avatar-initial bg-primary text-white" style="width: 50px; height: 50px; font-size: 1.2rem;">
+                            {{ usuario_selecionado.first_name|slice:":1" }}{{ usuario_selecionado.last_name|slice:":1" }}
+                        </div>
+                        <div>
+                            <h3 class="fw-bold mb-0" style="color: var(--text-main)">{{ usuario_selecionado.get_full_name|default:usuario_selecionado.username }}</h3>
+                            <span class="badge {% if usuario_selecionado.is_active %}bg-success-subtle text-success{% else %}bg-danger-subtle text-danger{% endif %}">
+                                {% if usuario_selecionado.is_active %}Ativo{% else %}Bloqueado{% endif %}
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <form method="post" action="{% url 'editar_usuario_post' usuario_selecionado.id %}">
+                        {% csrf_token %}
+                        
+                        <div class="section-title">INFORMAÇÕES BÁSICAS</div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Nome</label>
+                                <input type="text" name="first_name" class="form-control form-control-pro" value="{{ usuario_selecionado.first_name }}">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Sobrenome</label>
+                                <input type="text" name="last_name" class="form-control form-control-pro" value="{{ usuario_selecionado.last_name }}">
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Usuário</label>
+                            <input type="text" class="form-control form-control-pro text-muted" style="background: var(--bg-body);" value="{{ usuario_selecionado.username }}" readonly>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label">Setor</label>
+                            <select name="setor" class="form-select form-control-pro">
+                                {% for setor in setores %}
+                                    <option value="{{ setor.id }}" {% if usuario_selecionado.perfil.setor.id == setor.id %}selected{% endif %}>{{ setor.nome }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="d-flex justify-content-between align-items-center mt-5 pt-4 border-top">
+                            <div>
+                                <a href="{% url 'excluir_usuario' usuario_selecionado.id %}" class="btn btn-outline-danger btn-sm border-0 opacity-75" onclick="return confirm('ATENÇÃO: Essa ação é irreversível.')">
+                                    <i class="bi bi-trash me-1"></i> Excluir
+                                </a>
+                            </div>
+                            <div class="d-flex gap-2">
+                                <a href="{% url 'alternar_status_usuario' usuario_selecionado.id %}" class="btn {% if usuario_selecionado.is_active %}btn-light text-danger border{% else %}btn-success{% endif %} fw-bold">
+                                    {% if usuario_selecionado.is_active %}Bloquear{% else %}Desbloquear{% endif %}
+                                </a>
+                                <button type="submit" class="btn btn-primary px-4 fw-bold shadow-sm">Salvar</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+            {% else %}
+                <div class="h-100 d-flex flex-column align-items-center justify-content-center text-center opacity-50">
+                    <div class="rounded-circle p-4 mb-3" style="background: var(--border-color);">
+                        <i class="bi bi-people text-muted" style="font-size: 3rem;"></i>
+                    </div>
+                    <h5 class="fw-bold" style="color: var(--text-main)">Nenhum usuário selecionado</h5>
+                    <p class="text-muted small">Selecione um colaborador na lista ao lado.</p>
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="sidebar-right">
+            <div class="sidebar-header">
+                <form method="get" class="mb-3">
+                    <div class="input-group">
+                        <span class="input-group-text border-end-0" style="background: var(--input-bg); border-color: var(--border-color);"><i class="bi bi-search text-muted"></i></span>
+                        <input type="text" id="userSearch" class="form-control border-start-0 ps-0 shadow-none form-control-pro" placeholder="Buscar..." autocomplete="off">
+                    </div>
+                </form>
+
+                <div class="d-flex gap-2">
+                    <select class="form-select form-select-sm form-control-pro" id="setorFilter">
+                        <option value="">Todos Setores</option>
+                        {% for setor in setores %}
+                            <option value="{{ setor.nome }}">{{ setor.nome }}</option>
+                        {% endfor %}
+                    </select>
+
+                    <div class="dropdown">
+                        <button class="btn btn-light border btn-sm dropdown-toggle fw-bold" type="button" data-bs-toggle="dropdown">
+                            Ações
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end shadow">
+                            <li>
+                                <button class="dropdown-item d-flex align-items-center gap-2 text-success" onclick="exportData('excel')">
+                                    <i class="bi bi-file-earmark-excel"></i> Exportar Excel
+                                </button>
+                            </li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <button class="dropdown-item d-flex align-items-center gap-2 text-danger fw-bold" onclick="submitBulkAction('delete')">
+                                    <i class="bi bi-trash"></i> Excluir Selecionados
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="px-4 py-2 border-bottom d-flex align-items-center justify-content-between" style="background: var(--hover-bg);">
+                <div class="form-check">
+                    <input class="form-check-input custom-check" type="checkbox" id="selectAll">
+                    <label class="form-check-label small fw-bold text-muted ms-2" for="selectAll">Selecionar Todos</label>
+                </div>
+                <span class="badge border text-muted" style="background: var(--card-bg);" id="countBadge">{{ usuarios.count }}</span>
+            </div>
+
+            <form id="bulkForm" method="post" action="{% url 'acao_em_massa_usuarios' %}" class="user-list">
+                {% csrf_token %}
+                <input type="hidden" name="action_type" id="bulkActionInput">
+
+                {% for u in usuarios %}
+                <div class="user-item {% if usuario_selecionado.id == u.id %}active{% endif %} {% if not u.is_active %}grayscale{% endif %}" onclick="window.location='{% url 'gerenciar_usuarios' u.id %}'">
+                    <div class="form-check me-2" onclick="event.stopPropagation()">
+                        <input class="form-check-input custom-check user-checkbox" type="checkbox" name="selected_users" value="{{ u.id }}">
+                    </div>
+                    <div class="avatar-initial">
+                        {{ u.first_name|slice:":1"|default:u.username|slice:":1" }}
+                    </div>
+                    <div style="flex: 1; min-width: 0;">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="fw-bold text-truncate user-name">{{ u.get_full_name|default:u.username }}</div>
+                            {% if not u.is_active %}<i class="bi bi-lock-fill text-danger small" title="Bloqueado"></i>{% endif %}
+                        </div>
+                        <div class="small text-truncate opacity-75 user-sector">
+                            {{ u.perfil.setor.nome|default:"Sem Setor" }}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </form>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalNovoGrupo" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content border-0 shadow-lg">
+                <div class="modal-header border-bottom">
+                    <h6 class="modal-title fw-bold">Adicionar Grupo</h6>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                
+                <form action="{% url 'criar_grupo_sistema' %}" method="POST" id="formGrupo">
+                    {% csrf_token %}
+                    <div class="modal-body p-4">
+                        <div class="mb-4">
+                            <label class="form-label fw-bold small text-muted text-uppercase">Nome do Grupo</label>
+                            <input type="text" name="nome_grupo" class="form-control form-control-pro" placeholder="Ex: Analista N1" required>
+                        </div>
+
+                        <div class="row g-2 align-items-center">
+                            
+                            <div class="col-5">
+                                <div class="dual-list-box">
+                                    <div class="dual-list-header">Permissões disponíveis</div>
+                                    <div class="dual-list-filter">
+                                        <div class="input-group input-group-sm">
+                                            <span class="input-group-text border-end-0" style="background: var(--input-bg); border-color: var(--border-color);"><i class="bi bi-search"></i></span>
+                                            <input type="text" id="filterAvailable" class="form-control border-start-0 shadow-none" placeholder="Filtrar" style="background: var(--input-bg); color: var(--text-main); border-color: var(--border-color);">
+                                        </div>
+                                    </div>
+                                    <select multiple id="listAvailable" class="dual-list-select">
+                                        {% for p in todas_permissoes %}
+                                            <option value="{{ p.id }}">
+                                                {{ p.content_type.app_label|capfirst }} | {{ p.content_type.model }} | {{ p.name }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                    <div class="dual-list-footer">
+                                        <a href="#" class="text-decoration-none fw-bold small text-primary" onclick="chooseAll(event)">Escolher todas</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-2 d-flex flex-column align-items-center gap-2">
+                                <button type="button" class="btn btn-light border btn-sm rounded-circle shadow-sm" onclick="moveItems('listAvailable', 'listChosen')" title="Adicionar">
+                                    <i class="bi bi-arrow-right"></i>
+                                </button>
+                                <button type="button" class="btn btn-light border btn-sm rounded-circle shadow-sm" onclick="moveItems('listChosen', 'listAvailable')" title="Remover">
+                                    <i class="bi bi-arrow-left"></i>
+                                </button>
+                            </div>
+
+                            <div class="col-5">
+                                <div class="dual-list-box">
+                                    <div class="dual-list-header">Permissões escolhidas</div>
+                                    <div class="dual-list-filter">
+                                        <div class="input-group input-group-sm">
+                                            <span class="input-group-text border-end-0" style="background: var(--input-bg); border-color: var(--border-color);"><i class="bi bi-search"></i></span>
+                                            <input type="text" id="filterChosen" class="form-control border-start-0 shadow-none" placeholder="Filtrar" style="background: var(--input-bg); color: var(--text-main); border-color: var(--border-color);">
+                                        </div>
+                                    </div>
+                                    <select multiple name="permissoes_escolhidas" id="listChosen" class="dual-list-select">
+                                    </select>
+                                    <div class="dual-list-footer">
+                                        <a href="#" class="text-decoration-none fw-bold small text-danger" onclick="removeAll(event)">Remover todas</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        
+                        <div class="form-text mt-2 small text-muted text-center">
+                            <i class="bi bi-info-circle me-1"></i> Segure "Ctrl" ou "Command" para selecionar múltiplos itens.
+                        </div>
+
+                    </div>
+                    <div class="modal-footer border-0">
+                        <button type="button" class="btn btn-light border" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-dark fw-bold px-4">SALVAR GRUPO</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{% static 'tickets/js/gerenciar_usuarios.js' %}"></script>
+</body>
+</html>

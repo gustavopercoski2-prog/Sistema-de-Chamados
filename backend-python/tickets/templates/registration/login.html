@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Suporte TI</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+    <style>
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .login-card {
+            width: 100%;
+            max-width: 400px;
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .card-header-icon {
+            font-size: 3rem;
+            color: #0d6efd;
+            margin-bottom: 10px;
+        }
+
+        .btn,
+        .form-control {
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(13, 110, 253, 0.3);
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            margin: 1.5rem 0;
+            color: #6c757d;
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .divider:not(:empty)::before {
+            margin-right: .5em;
+        }
+
+        .divider:not(:empty)::after {
+            margin-left: .5em;
+        }
+
+        .btn-visitor {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            border: none;
+            color: white;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-visitor:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(16, 185, 129, 0.3);
+            color: white;
+            opacity: 0.95;
+        }
+
+        .info-box {
+            background-color: #e7f1ff;
+            border-left: 4px solid #0d6efd;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            color: #495057;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="card login-card p-4 p-md-5">
+        <div class="text-center mb-4">
+            <div class="card-header-icon">
+                <i class="bi bi-shield-lock"></i>
+            </div>
+            <h2 class="fw-bold text-dark">Acesso Restrito</h2>
+            <p class="text-muted small">Sistema de Chamados PySupport</p>
+        </div>
+
+        <form id="loginForm" method="post" action="{% url 'login' %}">
+            {% csrf_token %}
+
+            <div class="form-floating mb-3">
+                {{ form.username }}
+                <label for="id_username"><i class="bi bi-person"></i> Usuário</label>
+            </div>
+
+            <div class="form-floating mb-4">
+                {{ form.password }}
+                <label for="id_password"><i class="bi bi-key"></i> Senha</label>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100 py-2 fw-bold shadow-sm">
+                Entrar no Sistema
+            </button>
+        </form>
+
+        <div class="divider">VISITANTES / RECRUTADORES</div>
+
+        <a href="{% url 'criar_usuario_teste' %}" class="btn btn-visitor w-100 py-2 shadow-sm mb-2">
+            <i class="bi bi-rocket-takeoff-fill"></i> Gerar Usuário de Teste
+        </a>
+        <p class="text-center text-muted fst-italic" style="font-size: 0.7rem;">
+            Cria um acesso temporário para testar as funcionalidades.
+        </p>
+        <div class="text-center mt-3 pt-3 border-top">
+
+            <a href="#adminMessage" data-bs-toggle="collapse" role="button" aria-expanded="false"
+                aria-controls="adminMessage" class="text-decoration-none small text-muted">
+                Esqueceu a senha?
+            </a>
+
+            <div class="collapse mt-3" id="adminMessage">
+                <div class="card card-body info-box py-2 text-start shadow-sm">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-info-circle-fill text-primary me-2"></i>
+                        <span>Contate o Administrador do Sistema.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // aplica estilo bootstrap nos inputs do django
+            var inputs = document.querySelectorAll('input, select, textarea');
+            inputs.forEach(input => {
+                input.classList.add('form-control');
+                input.setAttribute('placeholder', ' ');
+            });
+        });
+
+        // intercepta o formulario para validar no java antes
+        document.getElementById('loginForm').addEventListener('submit', async function (event) {
+            event.preventDefault(); 
+
+            const username = document.getElementById('id_username').value;
+            const password = document.getElementById('id_password').value;
+            const form = this;
+
+            try {
+                // chama a api java (spring boot) na porta 8080
+                const response = await fetch('https://auth-api-java-r0mn.onrender.com/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username: username, password: password })
+                });
+
+                if (response.ok) {
+                    // sucesso! java validou a senha
+                    const data = await response.json();
+
+                    // guarda o token
+                    localStorage.setItem('user_token', data.token);
+
+                    form.submit();
+
+                } else {
+                    alert('Acesso Negado (Java): Usuário ou senha incorretos.');
+                }
+
+            } catch (error) {
+                // logando o erro pra conferir depois
+                console.error('erro:', error);
+
+                // avisa que o java tá dormindo
+                alert('o motor de seguranca java esta acordando. o sistema entrara via modo de compatibilidade django...');
+
+                // django assume o controle
+                form.submit();
+            }
+        });
+    </script>
+
+</body>
+
+</html>
