@@ -572,3 +572,17 @@ def registro(request):
         form = UserCreationForm()
 
     return render(request, 'registration/registro.html', {'form': form})
+
+
+# nova funcao de excluir setor
+@login_required
+@user_passes_test(lambda u: u.is_superuser)
+def excluir_setor(request, pk):
+    setor = get_object_or_404(Setor, pk=pk)
+    nome = setor.nome
+    
+    # se apagar o setor, os chamados antigos ficam com setor null
+    setor.delete()
+    
+    messages.success(request, f'Setor "{nome}" removido.')
+    return redirect('gerenciar_usuarios')

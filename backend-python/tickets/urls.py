@@ -37,4 +37,5 @@ urlpatterns = [
 
     # setores
     path('setores/novo/', views.gerenciar_setores, name='gerenciar_setores'),
+    path('setores/excluir/<int:pk>/', views.excluir_setor, name='excluir_setor'),
 ]
