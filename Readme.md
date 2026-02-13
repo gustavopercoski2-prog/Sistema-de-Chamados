@@ -265,22 +265,18 @@ python manage.py runserver
 
 <div align="center">
 
-### Developed by *Gustavo Percoski*
+### Development by *Gustavo Percoski*
 
 <a href="https://www.linkedin.com/in/gustavo-percoski/" target="_blank">
 <img src="https://img.shields.io/badge/LinkedIn-000000?style=for-the-badge&logo=linkedin&logoColor=white" />
 </a>
 &nbsp;
-<a href="https://www.instagram.com/pski.gustavo/" target="_blank">
-<img src="https://img.shields.io/badge/Instagram-000000?style=for-the-badge&logo=instagram&logoColor=white" />
-</a>
-&nbsp;
-<a href="mailto:gustavopercoski2@GMAIL.COM">
+<a href="mailto:gustavopercoski2@gmail.com">
 <img src="https://img.shields.io/badge/Gmail-000000?style=for-the-badge&logo=gmail&logoColor=white" />
 </a>
 &nbsp;
-<a href="https://wa.me/5551991651479" target="_blank">
-<img src="https://img.shields.io/badge/WhatsApp-000000?style=for-the-badge&logo=whatsapp&logoColor=white" />
+<a href="https://github.com/gustavopercoski2-prog" target="_blank">
+<img src="https://img.shields.io/badge/GitHub-000000?style=for-the-badge&logo=github&logoColor=white" />
 </a>
 
 </div>
